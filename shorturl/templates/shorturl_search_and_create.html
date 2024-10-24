@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{%  load static %}
+{% block title %}Shorten & Search URL{% endblock %}
+
+{% block content %}
+<div class="container search-container">
+    <!-- Search Form -->
+    <!-- Welcome -->
+    <div class="search-section">
+    <form method="GET" action="{% url 'redirect_url' %}">
+        <div class="search-div">
+            <div id="base-url-inbox">
+                https://urlShortify/
+            </div>
+
+            <input type="text" name="short_url" placeholder="Search from shorten URL" class="search-input" required>
+
+            <button type="submit" class="search-btn">Search</button>
+        </div>
+    </form>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+</div>
+{% if not error %}
+    </div>
+<div class="container">
+    <!-- Shorten URL Form -->
+    <div class="shorten-section">
+        <h2 style="text-align: center">Create Shortened URL</h2>
+        <form method="POST" id="shortenForm" class="shortener-form">
+            {% csrf_token %}
+
+            <!-- Long URL Field -->
+            <div class="form-group">
+                {{ form.long_url.label_tag }}
+                {{ form.long_url }}
+            </div>
+
+            <div class="form-group">
+                {{ form.slug.label_tag }}
+                {{ form.slug }}
+            </div>
+
+            <!-- Expiration Date Field -->
+            <div class="form-group">
+                {{ form.expiration_date.label_tag }}
+                {{ form.expiration_date }}
+            </div>
+
+            <!-- Is Private Checkbox -->
+            <div class="form-group-checkbox">
+                {{ form.is_private.label_tag }}
+                {{ form.is_private }}
+            </div>
+
+            <!-- Password Field (Hidden by default) -->
+            <div class="form-group password-field" style="display: none;">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="submit-btn">Shorten URL</button>
+            </div>
+
+            {% if form.password.errors %}
+        <div class="error">{{ form.password.errors }}</div> <!-- Render password error messages -->
+    {% endif %}
+
+    {% if form.expiration_date.errors %}
+        <div class="error">{{ form.expiration_date.errors }}</div> <!-- Render expiration date error messages -->
+    {% endif %}
+
+    {% if form.slug.errors %}
+        <div class="error">{{ form.slug.errors }}</div> <!-- Render slug error messages -->
+    {% endif %}
+        </form>
+    </div>
+</div>
+    {% endif %}
+
+    {% if short_url and qr_code %}
+        <div class="container">
+           <div class="url_box">Shorten Url : {{ short_url }}</div>
+           <div class="qr-box">
+               <img src="{{ qr_code }}"/>
+           </div>
+        </div>
+    {% endif %}
+    {% if short_url and not qr_code %}
+        <div class="container">
+           <div class="url_box">Shorten Url : {{ short_url }}</div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

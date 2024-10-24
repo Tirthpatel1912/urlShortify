@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Track URL{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Track Shortened URL</h2>
+
+    <!-- Search for Tracking Data -->
+    <form method="GET" action="">
+        <input type="text" name="short_url" placeholder="Enter Shortened URL" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- If tracking data is present, display it -->
+    {% if tracking_data %}
+    <div class="stats-section">
+        <h3>URL Stats for: {{ short_url }}</h3>
+        <p>Total Clicks: {{ tracking_data.clicks }}</p>
+        <p>Created At: {{ tracking_data.created_at }}</p>
+        <p>Last Updated At: {{ tracking_data.updated_at }}</p>
+
+        <!-- IP Addresses and click details -->
+        <h4>Click Details:</h4>
+        <ul>
+            {% for entry in tracking_data.click_logs %}
+                <li>{{ entry.ip_address }} - {{ entry.host }} at {{ entry.clicked_at }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Graph -->
+        <h3>Click Graph</h3>
+        {% if graph %}
+            <img src="data:image/png;base64,{{ graph }}" alt="Click Graph" class="img-fluid">
+        {% else %}
+            <p>No click data available for this URL.</p>
+        {% endif %}
+    </div>
+    {% else %}
+        <div class="stats-section">
+            <h1>Please enter a valid shortened URL.</h1>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
