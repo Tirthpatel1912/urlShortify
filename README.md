@@ -1,6 +1,5 @@
 ![logo](https://github.com/user-attachments/assets/a6f50581-33ff-4dde-ae52-75872972c348)
 
-# URlSHORTIFY
 # URL Shortify
 
 URL Shortify is a simple and efficient web application that allows users to shorten long URLs and generate QR codes for easy access. With tracking capabilities, users can monitor the number of clicks on their shortened URLs.
